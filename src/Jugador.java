@@ -90,17 +90,18 @@ public class Jugador {
             System.out.println(indiceCartas[j]);
 
         }
+
         System.out.println("siguiente");
 
         // Se separan las cartas por pinta
-        for (int i = 1; i < indiceCartas.length; i++) {
+        for (int i = 0; i < indiceCartas.length; i++) {
             if (indiceCartas[i] <= 13) {
                 listaTrebol[TOTAL_DATOS_TREBOL] = indiceCartas[i];
                 TOTAL_DATOS_TREBOL++;
-            } else if (13 < indiceCartas[i] && indiceCartas[i] <= 26) {
+            } else if (indiceCartas[i] <= 26) {
                 listaPica[TOTAL_DATOS_PICA] = indiceCartas[i];
                 TOTAL_DATOS_PICA++;
-            } else if (26 < indiceCartas[i] && indiceCartas[i] <= 39) {
+            } else if (indiceCartas[i] <= 39) {
                 listaCorazon[TOTAL_DATOS_CORAZON] = indiceCartas[i];
                 TOTAL_DATOS_CORAZON++;
             } else {
@@ -108,68 +109,110 @@ public class Jugador {
                 TOTAL_DATOS_DIAMANTE++;
             }
         }
-        mensaje = "Se encontraron las siguientes escaleras de Trebol:\n";
-        for (int k = 0; k < listaTrebol.length - 1; k++) {
 
-            if (listaTrebol[k] + 1 == listaTrebol[k + 1]) {
-                int indice1 = listaTrebol[k] % 13;
-                if (indice1 != 0) {
-                    mensaje += NombreCarta.values()[(listaTrebol[k] % 13) - 1] + "+"
-                            + NombreCarta.values()[(listaTrebol[k + 1] % 13) - 1] + " _";
-                } else {
-                    mensaje += NombreCarta.values()[12];
+        // se quitan duplicados de las listas de pintas
+        int[] trebolSinDuplicados = Jugador.quitarDuplicados(listaTrebol);
+        int[] picaSinDuplicados = Jugador.quitarDuplicados(listaPica);
+        int[] corazonSinDuplicados = Jugador.quitarDuplicados(listaCorazon);
+        int[] diamanteSinDuplicados = Jugador.quitarDuplicados(listaDiamante);
+
+        mensaje = "Se encontraron las siguientes escaleras de Trebol:\n";
+
+        int l = 0;
+        while (l < trebolSinDuplicados.length - 1) {
+            int inicio = l;
+            while (l < trebolSinDuplicados.length - 1 && trebolSinDuplicados[l + 1] == trebolSinDuplicados[l] + 1) {
+                l++;
+            }
+            if (l > inicio) {
+                for (int j = inicio; j <= l; j++) {
+                    int indice1 = trebolSinDuplicados[j] % 13;
+
+                    if (indice1 != 0) {
+                        mensaje += NombreCarta.values()[(trebolSinDuplicados[j] % 13) - 1] + "+\n";
+                    } else if (indice1 == 0) {
+                        mensaje += NombreCarta.values()[12] + " _\n";
+
+                    }
 
                 }
+            } else {
+                l++;
             }
 
         }
-        mensaje += "Se encontraron las siguientes escaleras de Pica:\n";
-        for (int k = 0; k < listaPica.length - 1; k++) {
 
-            if (listaPica[k] + 1 == listaPica[k + 1]) {
-                int indice1 = listaPica[k] % 13;
-                if (indice1 != 0) {
-                    mensaje += NombreCarta.values()[(listaPica[k] % 13) - 1] + "+"
-                            + NombreCarta.values()[(listaPica[k + 1] % 13) - 1] + " _";
-                } else {
-                    mensaje += NombreCarta.values()[12];
+        mensaje += "Se encontraron las siguientes escaleras de Pica:\n";
+        int k = 0;
+        while (k < picaSinDuplicados.length - 1) {
+            int inicio = k;
+            while (k < picaSinDuplicados.length - 1 && picaSinDuplicados[k + 1] == picaSinDuplicados[k] + 1) {
+                k++;
+            }
+            if (k > inicio) {
+                for (int j = inicio; j <= k; j++) {
+                    int indice1 = picaSinDuplicados[j] % 13;
+
+                    if (indice1 != 0) {
+                        mensaje += NombreCarta.values()[(picaSinDuplicados[j] % 13) - 1] + "+\n";
+                    } else if (indice1 == 0) {
+                        mensaje += NombreCarta.values()[12] + " _\n";
+
+                    }
 
                 }
+            } else {
+                k++;
             }
 
         }
         mensaje += "Se encontraron las siguientes escaleras de Corazon:\n";
-        for (int k = 0; k < listaCorazon.length - 1; k++) {
+        int m = 0;
+        while (m < corazonSinDuplicados.length - 1) {
+            int inicio = m;
+            while (m < corazonSinDuplicados.length - 1 && corazonSinDuplicados[m + 1] == corazonSinDuplicados[m] + 1) {
+                m++;
+            }
+            if (m > inicio) {
+                for (int j = inicio; j <= m; j++) {
+                    int indice1 = corazonSinDuplicados[j] % 13;
 
-            if (listaCorazon[k] + 1 == listaCorazon[k + 1]) {
-                int indice1 = listaCorazon[k] % 13;
-                if (indice1 != 0) {
-                    mensaje += NombreCarta.values()[(listaCorazon[k] % 13) - 1] + "+"
-                            + NombreCarta.values()[(listaCorazon[k + 1] % 13) - 1] + " _";
-                } else {
-                    mensaje += NombreCarta.values()[12];
+                    if (indice1 != 0) {
+                        mensaje += NombreCarta.values()[(corazonSinDuplicados[j] % 13) - 1] + "+\n";
+                    } else if (indice1 == 0) {
+                        mensaje += NombreCarta.values()[12] + " _\n";
+
+                    }
 
                 }
+            } else {
+                m++;
             }
 
         }
         mensaje += "Se encontraron las siguientes escaleras de Diamante:\n";
-        for (int k = 0; k < listaDiamante.length - 1; k++) {
+        int n = 0;
+        while (n < diamanteSinDuplicados.length - 1) {
+            int inicio = n;
+            while (n < diamanteSinDuplicados.length - 1
+                    && diamanteSinDuplicados[n + 1] == diamanteSinDuplicados[n] + 1) {
+                n++;
+            }
+            if (n > inicio) {
+                for (int j = inicio; j <= n; j++) {
+                    int indice1 = diamanteSinDuplicados[j] % 13;
 
-            if (listaDiamante[k] + 1 == listaDiamante[k + 1]) {
-                int indice1 = listaDiamante[k] % 13;
-                if (indice1 != 0) {
-                    mensaje += NombreCarta.values()[(listaDiamante[k] % 13) - 1] + "+"
-                            + NombreCarta.values()[(listaDiamante[k + 1] % 13) - 1] + " _";
-                } else {
-                    mensaje += NombreCarta.values()[12];
+                    if (indice1 != 0) {
+                        mensaje += NombreCarta.values()[(diamanteSinDuplicados[j] % 13) - 1] + "+\n";
+                    } else if (indice1 == 0) {
+                        mensaje += NombreCarta.values()[12] + " _\n";
+
+                    }
 
                 }
+            } else {
+                n++;
             }
-
-        }
-        for (int i = 0; i < listaCorazon.length; i++) {
-            System.out.println(listaCorazon[i]);
 
         }
 
@@ -213,6 +256,33 @@ public class Jugador {
                 }
             }
         }
+    }
+
+    public static int[] quitarDuplicados(int[] a) {
+
+        int[] temp = new int[a.length];
+        int contador = 0;
+
+        for (int i = 0; i < a.length; i++) {
+            boolean yaEsta = false;
+            if (a[i] == 0)
+                continue;
+            for (int j = 0; j < contador; j++) {
+                if (a[i] == temp[j]) {
+                    yaEsta = true;
+                    break;
+                }
+            }
+            if (!yaEsta) {
+                temp[contador] = a[i];
+                contador++;
+            }
+        }
+        int[] sinDuplicados = new int[contador];
+        for (int i = 0; i < contador; i++) {
+            sinDuplicados[i] = temp[i];
+        }
+        return sinDuplicados;
     }
 
 }
